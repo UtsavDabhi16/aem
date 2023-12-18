@@ -1,0 +1,113 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .task-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .box-text-container {
+
+        }
+
+        .info-box__body {
+            display: flex;
+            height: 150px;
+
+        }
+
+        .box-image-container {
+            width: 30%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    </style>
+</head>
+<body>
+
+<sly data-sly-use.templates="core/wcm/components/commons/v1/templates.html">
+    <sly data-sly-call="${templates.placeholder @ isEmpty = !text, classAppend='cmp-text'}"></sly>
+</sly>
+
+
+<sly data-sly-use.obj="com.aem.projectt.example.core.models.TaskModel">
+
+    <div class="task-container">
+        <sly data-sly-list.item="${obj.task}">
+            <div class="">
+                <div class="info-box">
+                    <div class="info-box__body">
+                        <div class="box-image-container">
+                            <img src="${item.fileReference}" alt="Uploaded Image Preview">
+                        </div>
+                        <div class="box-text-container">
+                            <sly data-sly-test="${item.number}">
+                                <h2 class="count" data-count="13000">${item.number @ context='html'}</h2>
+                            </sly>
+                            <sly data-sly-test="${item.description}">${item.description @ context='html'}</sly>
+                            <sly data-sly-test="${item.title}">${item.title @ context='html'}<br></sly>
+<!--                            <sly data-sly-test="${item.myValue}">${item.myValue}<br></sly>-->
+
+                        </div>
+                        <div data-sly-test="${obj.myCheckbox}">
+                            <div>
+                                <br>
+                                <h3>First Name : </h3>
+                                <p>${obj.firstName}</p>
+                            </div>
+                            <div>
+                                <br>
+                                <h3>Last Name : </h3>
+                                <p>${obj.lastName}</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </sly>
+    </div>
+
+</sly>
+<script>
+    const myNum = document.querySelectorAll('.count')
+    console.log("Number" + myNum)
+    console.log("HELLO" + myNum.innerText)
+    let speed = 200;
+
+    myNum.forEach((myCount) => {
+
+
+        let target_count = myCount.dataset.count;
+        let init_count = +myCount.innerText;
+        console.log(target_count)
+
+        let new_increment_num = Math.floor(target_count / speed);
+
+        const updateNumber = () => {
+            init_count += new_increment_num;
+            myCount.innerText = init_count;
+
+            if (init_count < target_count) {
+                setTimeout(() => {
+                    updateNumber()
+                }, 5)
+            }
+        }
+
+        updateNumber();
+
+    })
+</script>
+
+</body>
+</html>
+
+<!--<h1>Hello World</h1>-->
